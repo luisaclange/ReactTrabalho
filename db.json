@@ -1,0 +1,11 @@
+{
+  "products":
+  [
+    { "id": 1, "title": "Produto XPTO 1", "description": "Description Produto XPTO 1", "value": 45.99, "image": "https://source.unsplash.com/random"},
+    { "id": 2, "title": "Produto XPTO 2", "description": "Description Produto XPTO 2", "value": 35.50, "image": "https://source.unsplash.com/random"},
+    { "id": 3, "title": "Produto XPTO 3", "description": "Description Produto XPTO 3", "value": 95.90, "image": "https://source.unsplash.com/random"},
+    { "id": 4, "title": "Produto XPTO 4", "description": "Description Produto XPTO 4", "value": 45.99, "image": "https://source.unsplash.com/random"},
+    { "id": 5, "title": "Produto XPTO 5", "description": "Description Produto XPTO 5", "value": 45.50, "image": "https://source.unsplash.com/random"},
+    { "id": 6, "title": "Produto XPTO 6", "description": "Description Produto XPTO 6", "value": 45.09, "image": "https://source.unsplash.com/random"}
+  ]
+}
