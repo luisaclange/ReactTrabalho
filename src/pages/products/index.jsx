@@ -27,7 +27,7 @@ function Products() {
     const navigate = useNavigate();
     const { productsShop, setProductsShop } = useShop();
 
-    const [product, setProduct] = useState({});
+    var [product, setProduct] = useState({});
     const [amount, setAmount] = useState(1);
     const [total, setTotal] = useState(0);
 
@@ -45,6 +45,10 @@ function Products() {
     }, [amount]);
 
     function addShop() {
+      product = {
+        ...product,
+        qtde: amount
+      }
       setProductsShop([...productsShop, product]);
 
       console.log([...productsShop, product]);
@@ -66,7 +70,7 @@ function Products() {
               <Typography component="h5" variant='h5'>
                 {product.title}
               </Typography>
-              <Typography component="subtitle1" variant='textSecondary'>
+              <Typography variant='textSecondary'>
                 {product.description}
               </Typography>
               <Typography component="h5" variant='h5'>

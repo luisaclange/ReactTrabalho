@@ -15,5 +15,5 @@ export const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         height: '70vh',
         fontFamily: 'Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif'
-    }
+    },
 }));
