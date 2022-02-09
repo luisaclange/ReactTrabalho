@@ -3,6 +3,10 @@ import shadows from '@material-ui/core/styles/shadows';
 
 
 export const useStyles = makeStyles((theme) => ({
+
+    all: {
+        fontFamily: 'Nanum Gothic, sans-serif'
+    },
     tabelaExt: {
         display: 'flex',
         justifyContent: 'center',
@@ -34,6 +38,10 @@ export const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         fontFamily: 'Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif'
     },
+    botao: {
+        margin: '10px', 
+        padding: '10px' 
+    }
 
 
 }));

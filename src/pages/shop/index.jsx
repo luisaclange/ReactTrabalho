@@ -21,72 +21,59 @@ import Fade from '@material-ui/core/Fade';
 import Menu from '../../components/Menu';
 import { useShop } from '../../context/shop';
 import { useStyles } from './styles';
+import Fab from '@material-ui/core/Fab';
 
 
 export default function Shop() {
   const { productsShop, setProductsShop } = useShop();
-  const [total, settotal] = React.useState(productsShop.reduce((a,v) =>  a += v.value * v.qtde , 0 ));
+  const [total, settotal] = React.useState(productsShop.reduce((a, v) => a += v.value * v.qtde, 0));
+  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const navigation = useNavigate();
 
-  // useEffect( async () => {
-  //   settotal(productsShop.reduce((a,v) =>  a += v.value * v.qtde, 0 ));
-  // }, [productsShop]);
-
+  // Botão comprar mais produtos
   const navigateHome = () => {
     navigation('/')
   }
 
+  // Funções na linha
   function excluir(id) {
-    const product = productsShop.find(product => product.id === id); 
+    const product = productsShop.find(product => product.id === id);
     settotal(total - product.value * product.qtde);
     const auxList = productsShop.filter(item => item.id !== id);
-
     setProductsShop(auxList);
   }
 
   const aumentar = (id) => {
-
     const product = productsShop.find(product => product.id === id);
     product.qtde = product.qtde + 1;
     settotal(total + product.value);
-
-    setProductsShop(prevProductsShop => {
-      return [...new Set([...prevProductsShop, product])];
-    }) 
-  }
-
-  const diminuir = (id) => {
-
-    const product = productsShop.find(product => product.id === id);
-    product.qtde = product.qtde - 1;
-    settotal(total - product.value);
-
     setProductsShop(prevProductsShop => {
       return [...new Set([...prevProductsShop, product])];
     })
   }
 
+  const diminuir = (id) => {
+    const product = productsShop.find(product => product.id === id);
+    product.qtde = product.qtde - 1;
+    settotal(total - product.value);
+    setProductsShop(prevProductsShop => {
+      return [...new Set([...prevProductsShop, product])];
+    })
+  }
 
-
-  const [open, setOpen] = React.useState(false);
-
+  // Funções para modal
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setProductsShop([]);
   }
 
-
-
-
-
-
-
   return (
-    <div>
+    <div className={classes.all}>
       <Menu />
       <div className={classes.tabelaExt} style={productsShop.length === 0 ? { display: 'none' } : { display: 'flex', flexDirection: 'column' }}>
         <TableContainer component={Paper} className={classes.tabela}>
@@ -114,7 +101,7 @@ export default function Shop() {
                   <TableCell align="center">{row.valueFormatted}</TableCell>
                   <TableCell>
                     <div className={classes.controls} style={{ display: 'flex', flex: 'row', alignItems: "center", justifyContent: 'center' }}>
-                      <IconButton onClick={() => diminuir(row.id)}>
+                      <IconButton onClick={() => {if (row.qtde > 1) {diminuir(row.id)}}}>
                         <RemoveIcon />
                       </IconButton>
 
@@ -127,8 +114,8 @@ export default function Shop() {
                       </IconButton>
                     </div>
                   </TableCell>
-                  <TableCell align="center">{FormatCurrency(row.value * row.qtde)}</TableCell>
-                  <TableCell align="center"><Button onClick={() => excluir(row.id)}><ClearIcon /></Button></TableCell>
+                  <TableCell align="center" width="150px">{FormatCurrency(row.value * row.qtde)}</TableCell>
+                  <TableCell align="center" width="70px"><Button onClick={() => excluir(row.id)}><ClearIcon /></Button></TableCell>
                 </TableRow>
               ))}
               <TableRow>
@@ -146,8 +133,8 @@ export default function Shop() {
           display: 'flex', flex: 'row', alignItems: "center", justifyContent: 'center', margin: '60px',
           height: '25px', borderCollapse: 'separate'
         }}>
-          <button style={{ marginRight: '12px', borderRadius: '15px', width: '160px', height: '55px' }} onClick={() => handleOpen()}> <h3>Finalizar Compra</h3></button>
-          <button style={{ marginLeft: '12px', borderRadius: '15px', width: '160px', height: '55px' }} onClick={() => navigateHome()}> <h3>Ver mais Produtos</h3></button>
+          <Fab variant="extended" className={classes.botao} onClick={() => handleOpen()}> <h3>Finalizar Compra</h3></Fab>
+          <Fab variant="extended" className={classes.botao} onClick={() => navigateHome()}> <h3>Ver mais Produtos</h3></Fab>
         </div>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -164,7 +151,7 @@ export default function Shop() {
           <Fade in={open}>
             <div className={classes.paper} >
               <h2 id="transition-modal-title"> Sua compra foi realizada com sucesso.</h2>
-              <p id="transition-modal-description"> Volte sempre!</p>
+              <p id="transition-modal-description">Volte sempre!</p>
             </div>
           </Fade>
         </Modal>
@@ -173,6 +160,11 @@ export default function Shop() {
         <h1>Você ainda não adicionou nenhum produto</h1>
 
       </div>
+      <style>{`
+          
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+      
+      `}</style>
 
     </div>
 
