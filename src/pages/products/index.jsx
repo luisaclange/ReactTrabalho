@@ -45,15 +45,28 @@ function Products() {
     }, [amount]);
 
     function addShop() {
-      product = {
-        ...product,
-        qtde: amount
+      if (productsShop.find(p => p.id === product.id) === undefined) {
+        product = {
+          ...product,
+          qtde: amount
+        }
+        setProductsShop([...productsShop, product]);
+  
+        console.log([...productsShop, product]);
+  
+        navigate('/')
+      } else {
+        const p = productsShop.find(p => p.id === product.id);
+        p.qtde = p.qtde + amount;
+
+        setProductsShop(prevProductsShop => {
+          return [...new Set([...prevProductsShop, p])];
+        });
+
+        console.log([...productsShop, product]);
+  
+        navigate('/')
       }
-      setProductsShop([...productsShop, product]);
-
-      console.log([...productsShop, product]);
-
-      navigate('/')
     }
 
     return (

@@ -15,32 +15,32 @@ import IconButton from '@material-ui/core/IconButton';
 import { useState } from 'react';
 import { FormatCurrency } from "../../utils/formatCurrency";
 import { useNavigate } from 'react-router';
-
-import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-
-
-
 import Menu from '../../components/Menu';
 import { useShop } from '../../context/shop';
 import { useStyles } from './styles';
-import { Navigate } from 'react-router';
 
 
 export default function Shop() {
   const { productsShop, setProductsShop } = useShop();
+  const [total, settotal] = React.useState(productsShop.reduce((a,v) =>  a += v.value * v.qtde , 0 ));
   const classes = useStyles();
-  const [newList, setNewList] = useState([]);
   const navigation = useNavigate();
+
+  // useEffect( async () => {
+  //   settotal(productsShop.reduce((a,v) =>  a += v.value * v.qtde, 0 ));
+  // }, [productsShop]);
 
   const navigateHome = () => {
     navigation('/')
   }
 
-  function excluir(l) {
-    const auxList = productsShop.filter(item => item.id !== l);
+  function excluir(id) {
+    const product = productsShop.find(product => product.id === id); 
+    settotal(total - product.value * product.qtde);
+    const auxList = productsShop.filter(item => item.id !== id);
 
     setProductsShop(auxList);
   }
@@ -49,22 +49,22 @@ export default function Shop() {
 
     const product = productsShop.find(product => product.id === id);
     product.qtde = product.qtde + 1;
+    settotal(total + product.value);
 
     setProductsShop(prevProductsShop => {
       return [...new Set([...prevProductsShop, product])];
-    })
-    console.log(productsShop);
+    }) 
   }
 
   const diminuir = (id) => {
 
     const product = productsShop.find(product => product.id === id);
     product.qtde = product.qtde - 1;
+    settotal(total - product.value);
 
     setProductsShop(prevProductsShop => {
       return [...new Set([...prevProductsShop, product])];
     })
-    console.log(productsShop);
   }
 
 
@@ -131,12 +131,14 @@ export default function Shop() {
                   <TableCell align="center"><Button onClick={() => excluir(row.id)}><ClearIcon /></Button></TableCell>
                 </TableRow>
               ))}
-              <TableRow></TableRow>
-              <TableRow></TableRow>
-              <TableRow></TableRow>
-              <TableRow></TableRow>
-              <TableRow>Total</TableRow>
-              <TableRow></TableRow>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell align="center"><strong>TOTAL:</strong></TableCell>
+                <TableCell align="center">{FormatCurrency(total)}</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
